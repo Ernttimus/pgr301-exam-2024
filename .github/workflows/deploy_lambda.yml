@@ -28,8 +28,9 @@ jobs:
           unzip aws-sam-cli.zip -d sam-installation
           sudo ./sam-installation/install --update
 
+        # Forgot to add the template location since it is inside a folder and not in root, hopefully it works this time
       - name: Build SAM application
-        run: sam build
+        run: sam build -t sam_lambda/template.yml
 
       - name: Deploy SAM application
         run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name image-generator-49-v2
