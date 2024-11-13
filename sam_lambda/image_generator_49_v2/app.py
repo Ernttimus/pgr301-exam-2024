@@ -7,8 +7,8 @@ import os
 bedrock_client = boto3.client("bedrock-runtime", region_name="us-east-1")
 s3_client = boto3.client("s3")
 model_id = "amazon.titan-image-generator-v1"
-bucket_name = "49"
-candidate_number = os.getenv("CANDIDATE_NUMBER")
+bucket_name = os.getenv("BUCKET_NAME")
+candidate_number = "49"
 
 def lambda_handler(event, context):
     """Generate an image based on the prompt and store it in S3."""
