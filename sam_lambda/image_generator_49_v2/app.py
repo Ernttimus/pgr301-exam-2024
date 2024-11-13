@@ -40,7 +40,7 @@ def lambda_handler(event, context):
         return {
             "statusCode": 200,
             "body": json.dumps({
-                "message": f"Image generated successfully for prompt: '{prompt}'",
+                "message": f"Image generated successfully for prompt: '{prompt}', maybe try a different prompt?",
                 "s3_uri": f"s3://{bucket_name}/{s3_image_path}"
             }),
         }
