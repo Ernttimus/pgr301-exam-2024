@@ -20,6 +20,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Install Python 3.9
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y python3.9 python3.9-distutils
+
+      - name: Set up Python 3.9
+        run: |
+          sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
+          python --version    
+
       - name: Install SAM CLI
         run: |
           sudo apt-get update -y
