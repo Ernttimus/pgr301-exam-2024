@@ -19,7 +19,7 @@ provider "aws" {
 }
 
 
-resource "aws_sqs_queue" "image_queue" {
+resource "aws_sqs_queue" "image_candidate_49_queue" {
   name = "image_processing_queue"
   visibility_timeout_seconds = 130
 }
@@ -51,7 +51,7 @@ resource "aws_iam_role" "lambda_execution" {
             "sqs:DeleteMessage",
             "sqs:GetQueueAttributes"
           ]
-          Resource = aws_sqs_queue.image_queue.arn
+          Resource = aws_sqs_queue.image_candidate_49_queue.arn
         },
         {
           Effect = "Allow"
@@ -75,14 +75,14 @@ resource "aws_lambda_function" "zipper_lambda" {
 
   environment {
     variables = {
-      QUEUE_URL = aws_sqs_queue.image_queue.id
+      QUEUE_URL = aws_sqs_queue.image_candidate_49_queue.id
       OUTPUT_BUCKET = "pgr301-couch-explorers"
     }
   }
 }
 
 resource "aws_lambda_event_source_mapping" "sqs_trigger" {
-  event_source_arn = aws_sqs_queue.image_queue.arn
+  event_source_arn = aws_sqs_queue.image_candidate_49_queue.arn
   function_name    = aws_lambda_function.zipper_lambda.arn
   batch_size       = 5
   enabled          = true
