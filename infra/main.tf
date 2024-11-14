@@ -6,7 +6,6 @@ terraform {
       version = "5.74.0"
     }
   }
-  #comment for test
 
   backend "s3" {
     bucket = "pgr301-2024-terraform-state"
@@ -25,7 +24,7 @@ resource "aws_sqs_queue" "image_candidate_49_queue" {
 }
 
 resource "aws_iam_role" "lambda_execution" {
-  name               = "lambda_execution_role_candidate_49"  # Changed to avoid conflict
+  name               = "lambda_execution_role_candidate_49"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -40,8 +39,8 @@ resource "aws_iam_role" "lambda_execution" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_s3_sqs_policy" {
-  name   = "lambda-s3-sqs-policy"
+resource "aws_iam_role_policy" "lambda_s3_sqs_bedrock_policy" {
+  name   = "lambda-s3-sqs-bedrock-policy"
   role   = aws_iam_role.lambda_execution.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -61,6 +60,13 @@ resource "aws_iam_role_policy" "lambda_s3_sqs_policy" {
           "s3:PutObject"
         ]
         Resource = "arn:aws:s3:::pgr301-couch-explorers/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "bedrock:InvokeModel"
+        ]
+        Resource = "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-image-generator-v1"
       }
     ]
   })
@@ -71,18 +77,17 @@ resource "aws_iam_role_policy_attachment" "lambda_cloudwatch_logs" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-# Lambda Function
 resource "aws_lambda_function" "zipper_lambda" {
   filename         = "lambda_sqs.zip"
   function_name    = "image-Generator-Function-candidate-49"
   role             = aws_iam_role.lambda_execution.arn
-  handler          = "lambda_sqs.handler"
+  handler          = "lambda_sqs.lambda_handler"  # Updated to match function name in Python code
   runtime          = "python3.9"
   timeout          = 100
 
   environment {
     variables = {
-      QUEUE_URL     = aws_sqs_queue.image_candidate_49_queue.id
+      QUEUE_URL   = aws_sqs_queue.image_candidate_49_queue.id
       BUCKET_NAME = "pgr301-couch-explorers"
     }
   }
