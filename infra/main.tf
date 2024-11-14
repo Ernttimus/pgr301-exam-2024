@@ -83,7 +83,7 @@ resource "aws_lambda_function" "zipper_lambda" {
   environment {
     variables = {
       QUEUE_URL     = aws_sqs_queue.image_candidate_49_queue.id
-      OUTPUT_BUCKET = "pgr301-couch-explorers"
+      BUCKET_NAME = "pgr301-couch-explorers"
     }
   }
 }
