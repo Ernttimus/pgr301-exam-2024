@@ -18,13 +18,13 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-
 resource "aws_sqs_queue" "image_candidate_49_queue" {
-  name = "image_processing_queue"
+  name                       = "image_processing_queue"
+  visibility_timeout_seconds = 110
 }
 
 resource "aws_iam_role" "lambda_execution" {
-  name = "lambda_execution_role"
+  name               = "lambda_execution_role_candidate_49"  # Changed to avoid conflict
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -37,44 +37,46 @@ resource "aws_iam_role" "lambda_execution" {
       }
     ]
   })
-
-  inline_policy {
-    name = "lambda-s3-sqs-policy"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Effect = "Allow"
-          Action = [
-            "sqs:ReceiveMessage",
-            "sqs:DeleteMessage",
-            "sqs:GetQueueAttributes"
-          ]
-          Resource = aws_sqs_queue.image_candidate_49_queue.arn
-        },
-        {
-          Effect = "Allow"
-          Action = [
-            "s3:PutObject"
-          ]
-          Resource = "arn:aws:s3:::pgr301-couch-explorers/*"
-        }
-      ]
-    })
-  }
 }
 
+resource "aws_iam_role_policy" "lambda_s3_sqs_policy" {
+  name   = "lambda-s3-sqs-policy"
+  role   = aws_iam_role.lambda_execution.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ]
+        Resource = aws_sqs_queue.image_candidate_49_queue.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject"
+        ]
+        Resource = "arn:aws:s3:::pgr301-couch-explorers/*"
+      }
+    ]
+  })
+}
+
+# Lambda Function
 resource "aws_lambda_function" "zipper_lambda" {
   filename         = "lambda_sqs.zip"
   function_name    = "image-Generator-Function-candidate-49"
   role             = aws_iam_role.lambda_execution.arn
   handler          = "lambda_sqs.handler"
   runtime          = "python3.9"
-  timeout          =  100
+  timeout          = 100
 
   environment {
     variables = {
-      QUEUE_URL = aws_sqs_queue.image_candidate_49_queue.id
+      QUEUE_URL     = aws_sqs_queue.image_candidate_49_queue.id
       OUTPUT_BUCKET = "pgr301-couch-explorers"
     }
   }
