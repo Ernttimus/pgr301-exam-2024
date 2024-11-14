@@ -18,7 +18,7 @@ def lambda_handler(event, context):
         # Extract the SQS message body
         prompt = record["body"]
         seed = random.randint(0, 2147483647)
-        s3_image_path = f"images/titan_{seed}.png"
+        s3_image_path = f"49/generated_images/titan_{seed}.png"  # Updated path
         # Prepare the request for image generation
         native_request = {
             "taskType": "TEXT_IMAGE",
