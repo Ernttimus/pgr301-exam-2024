@@ -21,7 +21,6 @@ provider "aws" {
 
 resource "aws_sqs_queue" "image_candidate_49_queue" {
   name = "image_processing_queue"
-  visibility_timeout_seconds = 130
 }
 
 resource "aws_iam_role" "lambda_execution" {
