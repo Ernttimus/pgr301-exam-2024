@@ -66,6 +66,11 @@ resource "aws_iam_role_policy" "lambda_s3_sqs_policy" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_cloudwatch_logs" {
+  role       = aws_iam_role.lambda_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
 # Lambda Function
 resource "aws_lambda_function" "zipper_lambda" {
   filename         = "lambda_sqs.zip"
