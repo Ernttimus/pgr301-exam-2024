@@ -19,11 +19,12 @@ provider "aws" {
 }
 
 
-resource "aws_sqs_queue" "queue_for_images" {
+resource "aws_sqs_queue" "image_queue" {
   name = "image_processing_queue"
+  visibility_timeout_seconds = 130
 }
 
-resource "aws_iam_role" "lambda_access_role" {
+resource "aws_iam_role" "lambda_execution" {
   name = "lambda_execution_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -50,7 +51,7 @@ resource "aws_iam_role" "lambda_access_role" {
             "sqs:DeleteMessage",
             "sqs:GetQueueAttributes"
           ]
-          Resource = aws_sqs_queue.queue_for_images.arn
+          Resource = aws_sqs_queue.image_queue.arn
         },
         {
           Effect = "Allow"
@@ -66,22 +67,22 @@ resource "aws_iam_role" "lambda_access_role" {
 
 resource "aws_lambda_function" "zipper_lambda" {
   filename         = "lambda_sqs.zip"
-  function_name    = "image_processing_lambda"
-  role             = aws_iam_role.lambda_access_role.arn
+  function_name    = "image-Generator-Function-candidate-49"
+  role             = aws_iam_role.lambda_execution.arn
   handler          = "lambda_sqs.handler"
   runtime          = "python3.9"
   timeout          =  100
 
   environment {
     variables = {
-      QUEUE_URL = aws_sqs_queue.queue_for_images.id
+      QUEUE_URL = aws_sqs_queue.image_queue.id
       OUTPUT_BUCKET = "pgr301-couch-explorers"
     }
   }
 }
 
-resource "aws_lambda_event_source_mapping" "sqs_event_source" {
-  event_source_arn = aws_sqs_queue.queue_for_images.arn
+resource "aws_lambda_event_source_mapping" "sqs_trigger" {
+  event_source_arn = aws_sqs_queue.image_queue.arn
   function_name    = aws_lambda_function.zipper_lambda.arn
   batch_size       = 5
   enabled          = true
