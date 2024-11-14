@@ -25,6 +25,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: ./java_sqs_client  # Adjusted
+          file: ./java_sqs_client/Dockerfile  # Adjusted
           push: true
           tags: testeksamenkr/java-sqs-client:latest
