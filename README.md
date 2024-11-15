@@ -32,5 +32,11 @@ Container image + SQS URL:
 Container image: testeksamenkr/java-sqs-client
 SQS URL: https://sqs.eu-west-1.amazonaws.com/244530008913/image_processing_queue
 
+oppgave 4
+Her ser du meldingene jeg har fått, jeg bekrefte at jeg vill subscribe til tjenesten.
+![Image Description](img/messages.png)
 
 
+
+Her er meldingen jeg fikk
+![Image Description](img/melding_om_at_det_fungerer.png)
