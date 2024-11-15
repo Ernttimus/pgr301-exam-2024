@@ -8,6 +8,8 @@ Lenke til kjørt GitHub Actions workflow
 https://github.com/Ernttimus/pgr301-exam-2024/actions/runs/11843678495/job/33008024357
 
 
+
+
 Oppgave 2
 
 Lenke til kjørt GitHub Actions workflow (MAIN):
@@ -18,3 +20,17 @@ https://github.com/Ernttimus/pgr301-exam-2024/actions/runs/11843573878/job/33005
 
 SQS-Kø URL:
 https://sqs.eu-west-1.amazonaws.com/244530008913/image_processing_queue
+
+
+
+Oppgave 3
+
+Beskrivelse av taggestrategi:
+Taggestrategien jeg har brukt er latest. Det for å gjøre det enkelt for meg å se nyeste eller det siste som har blitt pusha inn i docker repoet mitt. Dersom jeg puller vil nyeste utgave bli brukt.
+
+Container image + SQS URL:
+Container image: testeksamenkr/java-sqs-client
+SQS URL: https://sqs.eu-west-1.amazonaws.com/244530008913/image_processing_queue
+
+
+
