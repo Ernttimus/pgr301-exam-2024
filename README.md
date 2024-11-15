@@ -7,7 +7,7 @@
   - [https://86pufabpl5.execute-api.eu-west-1.amazonaws.com/Prod/generate-image](https://86pufabpl5.execute-api.eu-west-1.amazonaws.com/Prod/generate-image)  <!-- Updated endpoint -->
 
 - **Lenke til kjørt GitHub Actions workflow**:
-  - [Workflow Run](https://github.com/Ernttimus/pgr301-exam-2024/actions/runs/11843678495/job/33008024357)
+  - [https://github.com/Ernttimus/pgr301-exam-2024/actions/runs/11843678495/job/33008024357](https://github.com/Ernttimus/pgr301-exam-2024/actions/runs/11843678495/job/33008024357)
 
 ---
 
