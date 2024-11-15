@@ -102,7 +102,7 @@ resource "aws_lambda_event_source_mapping" "sqs_trigger" {
   event_source_arn = aws_sqs_queue.image_candidate_49_queue.arn
   function_name    = aws_lambda_function.zipper_lambda.arn
   batch_size       = 5
-  enabled          = false //true for testing purpose :D
+  enabled          = true //false for testing purpose :D
 }
 
 # CloudWatch Alarm for SQS Queue
