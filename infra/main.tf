@@ -112,7 +112,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
   evaluation_periods  = 1
   metric_name         = "ApproximateAgeOfOldestMessage"
   namespace           = "AWS/SQS"
-  period              = 20
+  period              = 30
   statistic           = "Average"
   threshold           = 10
   alarm_description   = "Triggers when the oldest message in the queue exceeds the defined threshold"
