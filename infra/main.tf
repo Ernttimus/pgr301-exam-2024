@@ -18,6 +18,11 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+variable "alert_email" {
+  description = "Email address for CloudWatch alarm notifications"
+  type        = string
+}
+
 resource "aws_sqs_queue" "image_candidate_49_queue" {
   name                       = "image_processing_queue"
   visibility_timeout_seconds = 110
@@ -97,5 +102,34 @@ resource "aws_lambda_event_source_mapping" "sqs_trigger" {
   event_source_arn = aws_sqs_queue.image_candidate_49_queue.arn
   function_name    = aws_lambda_function.zipper_lambda.arn
   batch_size       = 5
-  enabled          = true
+  enabled          = false //true for testing purpose :D
+}
+
+# CloudWatch Alarm for SQS Queue
+resource "aws_cloudwatch_metric_alarm" "sqs_oldest_message_alarm" {
+  alarm_name          = "SQSApproximateAgeOfOldestMessageAlarm"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "ApproximateAgeOfOldestMessage"
+  namespace           = "AWS/SQS"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 40
+  alarm_description   = "Triggers when the oldest message in the queue exceeds the defined threshold"
+  alarm_actions       = [aws_sns_topic.sqs_alarm_sns_topic.arn]
+  dimensions = {
+    QueueName = aws_sqs_queue.image_candidate_49_queue.name
+  }
+}
+
+# SNS Topic for Alarm Notifications
+resource "aws_sns_topic" "sqs_alarm_sns_topic" {
+  name = "sqs-alarm-topic"
+}
+
+# Email Subscription for Alarm Notifications
+resource "aws_sns_topic_subscription" "sqs_alarm_email_subscription" {
+  topic_arn = aws_sns_topic.sqs_alarm_sns_topic.arn
+  protocol  = "email"
+  endpoint  = var.alert_email
 }
