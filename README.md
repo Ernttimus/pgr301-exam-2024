@@ -39,4 +39,4 @@ Her ser du meldingene jeg har fått, jeg bekrefte at jeg vill subscribe til tjen
 
 
 Her er meldingen jeg fikk
-![Image Description](img/melding_om_at_det_fungerer.png)
+![Image Description](img/det_fungerte.png)
