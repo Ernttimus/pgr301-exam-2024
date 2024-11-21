@@ -46,6 +46,11 @@
   ![Operation Successful](img/det_fungerte.png)
 
 
+  - **Monitor**:
+  
+  ![Monitor](img/monitor.png)
+
+
 
 ## Oppgave 5
 
