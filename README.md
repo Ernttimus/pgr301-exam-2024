@@ -27,8 +27,8 @@
 ## Oppgave 3
 
 - **Beskrivelse av taggestrategi**: 
-  - Taggestrategien jeg har brukt er latest. Det for å gjøre det enkelt for meg å se nyeste eller det siste som har blitt pusha inn i docker repoet mitt. Dersom jeg puller vil nyeste utgave bli brukt.
-
+  - Taggestrategien jeg har brukt er latest. Det for å gjøre det enkelt for meg å se nyeste eller det siste som har blitt pusha inn i docker repoet mitt. Dersom jeg puller vil nyeste utgave bli brukt. Jeg bruker også github.sha som gir en identifier på vegne av commit. Hver commit gir en unik identifier til et eget image når det skal pushes inn til dockerhub. Det gir meg en historie på images dersom jeg vil bruke tidligere versjoner. Dette kan for eksempel være bra for roll back eller for å ha en liste med tidligere versjoner laget av tidligere commits uten å påvirke builds fra forrige opplastninger.
+    
 - **Container image + SQS URL**:
   - **Container Image**: `testeksamenkr/java-sqs-client`
   - **SQS URL**: [https://sqs.eu-west-1.amazonaws.com/244530008913/image_processing_queue](https://sqs.eu-west-1.amazonaws.com/244530008913/image_processing_queue)
